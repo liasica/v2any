@@ -14,3 +14,6 @@
 .claude/
 *.swp
 .DS_Store
+
+# GitHub Pages 构建产物
+/_site/

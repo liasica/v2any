@@ -2,7 +2,11 @@
 
 把 `vless://` 分享链接转换为 [mihomo](https://github.com/MetaCubeX/mihomo)（Clash Meta、Clash Verge 的内核）的 `proxies` 配置项。
 
-## 安装
+## 在线使用
+
+打开 <https://liasica.github.io/v2any/>，粘贴链接即可。转换通过 WebAssembly 在浏览器中完成，链接不会发送到任何服务器。
+
+## 命令行安装
 
 ```bash
 go install github.com/liasica/v2any@latest
@@ -72,7 +76,17 @@ mihomo 要求 `short-id` 是十六进制字符串。本工具不校验它的格�
 
 ## 发布
 
-推送 `v*` 标签后，GitHub Actions 会通过 GoReleaser 构建并发布 Release：
+推送 `master` 后，GitHub Actions 会自动更新在线页面。本地预览页面时，先构建再启动静态服务：
+
+```bash
+make site
+```
+
+```bash
+python3 -m http.server 8765 --directory _site
+```
+
+命令行工具的发布方式：推送 `v*` 标签后，GitHub Actions 会通过 GoReleaser 构建并发布 Release：
 
 ```bash
 git tag v0.1.0

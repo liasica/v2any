@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"net"
 	"net/url"
 	"strconv"
 	"strings"
@@ -81,7 +80,7 @@ func parseLink(link string) (*proxy, error) {
 		return nil, err
 	}
 	if location.Scheme != "vless" {
-		return nil, fmt.Errorf("不支持的协议: %q", location.Scheme)
+		return nil, fmt.Errorf("不是 vless 链接: %q", link)
 	}
 
 	// url.Values.Get 会吞掉解析错误，这里显式解析以便发现损坏的链接
@@ -109,7 +108,7 @@ func parseLink(link string) (*proxy, error) {
 	// 备注为空或与服务器地址相同时没有区分作用，改用「地址:端口」
 	name := location.Fragment
 	if name == "" || name == server {
-		name = net.JoinHostPort(server, location.Port())
+		name = location.Host
 	}
 
 	result := &proxy{

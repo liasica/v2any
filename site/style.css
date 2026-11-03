@@ -1,0 +1,257 @@
+:root {
+  color-scheme: light dark;
+
+  /* 左半边的钴蓝在深浅色模式下保持不变，是页面的主要识别特征 */
+  --cobalt: #1d3bd1;
+  --cobalt-deep: #142a9c;
+  --on-cobalt: #ffffff;
+  --on-cobalt-soft: #cdd6ff;
+
+  --paper: #f3f5fb;
+  --ink: #141a33;
+  --ink-soft: #535b7a;
+  --key: #1d3bd1;
+  --accent: #1d3bd1;
+  --on-accent: #ffffff;
+  --danger: #b3261e;
+
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, "Noto Sans Mono CJK SC", monospace;
+  --gutter: clamp(16px, 3vw, 40px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0f1636;
+    --ink: #e6eafb;
+    --ink-soft: #a3add6;
+    --key: #9db0ff;
+    --accent: #9db0ff;
+    --on-accent: #0f1636;
+    --danger: #ffb4ab;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--paper);
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+/* 左半边: 输入 */
+
+.source {
+  display: flex;
+  flex-direction: column;
+  background: var(--cobalt);
+  color: var(--on-cobalt);
+}
+
+.source-head {
+  padding: 20px var(--gutter) clamp(24px, 5vh, 56px);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: clamp(24px, 6vh, 72px);
+}
+
+.brand a {
+  color: var(--on-cobalt);
+  text-underline-offset: 3px;
+}
+
+h1 {
+  font-size: clamp(30px, 4.2vw, 56px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* 按意群换行，避免在词语中间断开 */
+h1 span {
+  display: inline-block;
+}
+
+#links {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 38dvh;
+  padding: 20px var(--gutter);
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  resize: none;
+  background: var(--cobalt-deep);
+  color: var(--on-cobalt);
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.65;
+  word-break: break-all;
+}
+
+#links::placeholder {
+  color: var(--on-cobalt-soft);
+  opacity: 1;
+  font-family: var(--sans);
+}
+
+/* 输入框铺满左半边，普通外框会被裁切，改用内描边显示焦点 */
+#links:focus-visible {
+  box-shadow: inset 0 0 0 3px var(--on-cobalt);
+}
+
+.source-note {
+  padding: 14px var(--gutter);
+  color: var(--on-cobalt-soft);
+  font-size: 14px;
+  text-wrap: pretty;
+}
+
+/* 右半边: 结果 */
+
+.result {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px var(--gutter);
+  background: var(--paper);
+}
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+#copy {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.text-button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--key);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+button:focus-visible,
+.brand a:focus-visible,
+#output:focus-visible {
+  outline: 3px solid var(--key);
+  outline-offset: 2px;
+}
+
+.brand a:focus-visible {
+  outline-color: var(--on-cobalt);
+}
+
+.empty {
+  color: var(--ink-soft);
+}
+
+.error {
+  color: var(--danger);
+  overflow-wrap: anywhere;
+}
+
+#output {
+  flex: 1;
+  margin: 0;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+#output .key {
+  color: var(--key);
+}
+
+.result-note {
+  margin-top: 16px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+code {
+  font-family: var(--mono);
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    height: 100dvh;
+  }
+
+  .source,
+  .result {
+    min-height: 0;
+  }
+
+  #links {
+    min-height: 0;
+  }
+
+  #output {
+    min-height: 0;
+  }
+}

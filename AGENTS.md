@@ -6,9 +6,11 @@
 
 ## 结构与技术栈
 
-- 单个 Go 命令行程序，代码都在根目录：`main.go` 处理输入和输出，`vless.go` 负责解析链接和映射字段
+- 同一份 Go 代码提供两个入口，都在根目录：`main.go` 是命令行（`!js`），`main_js.go` 是网页调用的 WebAssembly；`convert.go` 和 `vless.go` 是共用的转换逻辑
+- 网页在 `site/`，发布到 GitHub Pages（<https://liasica.github.io/v2any/>）。转换逻辑只维护 Go 这一份，不要在 JS 中重写
 - 依赖 `go.yaml.in/yaml/v3`。必须用 YAML 库输出，而不是拼接文本：`short-id` 可能是 `12345678`、`0e12` 这类会被解析成数字的取值，必须加引号
-- 用 GoReleaser 发布，配置见 `.goreleaser.yaml` 和 `.github/workflows/release.yml`
+- 命令行用 GoReleaser 发布，配置见 `.goreleaser.yaml` 和 `.github/workflows/release.yml`；网页由 `.github/workflows/pages.yml` 执行 `make site` 后部署
+- 不要在共用逻辑中引入 `net` 等体积大的包，WebAssembly 文件目前约 4 MB
 
 ## 关键约束
 
@@ -17,6 +19,7 @@
 - `httpupgrade` 必须输出为 `network: ws` 加 `ws-opts.v2ray-http-upgrade: true`。mihomo 内置转换器（`common/convert/v.go`）写的是 `network: httpupgrade`，而它的 VLESS 适配器没有这个分支，不要照搬
 - 无法识别的 `security` 和传输方式必须报错，不能退化成明文或 `tcp` 后继续输出
 - 仓库中不得出现真实节点的链接、UUID、密钥，文档示例一律使用虚构数据
+- 链接含有节点凭据，网页必须保持纯本地转换：不加载外部资源，不接入统计，不把输入写入 `localStorage` 或 URL。`index.html` 中的 CSP（`connect-src 'self'` 等）是这条约束的保障，不要放宽
 
 ## 开发约定
 

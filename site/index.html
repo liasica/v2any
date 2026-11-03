@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; connect-src 'self'; img-src data:; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="把 vless 链接转换成 mihomo 配置，转换只在浏览器中进行。">
+    <title>v2any</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+    <script src="wasm_exec.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="split">
+      <section class="source">
+        <header class="source-head">
+          <div class="brand">
+            <strong>v2any</strong>
+            <a href="https://github.com/liasica/v2any" rel="noreferrer">GitHub</a>
+          </div>
+          <h1><span>把 vless 链接</span><span>转换成 mihomo 配置</span></h1>
+        </header>
+        <label class="visually-hidden" for="links">vless 链接</label>
+        <textarea id="links" placeholder="在这里粘贴 vless:// 链接，多条链接请换行" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off"></textarea>
+        <p class="source-note">转换只在你的浏览器中进行，链接不会发送到任何服务器。</p>
+      </section>
+
+      <section class="result" aria-labelledby="result-title">
+        <header class="result-head">
+          <h2 id="result-title">mihomo 配置</h2>
+          <button id="copy" type="button" hidden>复制配置</button>
+        </header>
+
+        <div id="empty" class="empty">
+          <p>粘贴链接后，配置会显示在这里。</p>
+          <button id="example" class="text-button" type="button">用示例链接试试</button>
+        </div>
+
+        <p id="error" class="error" role="alert" hidden></p>
+
+        <pre id="output" tabindex="0" aria-label="转换结果" hidden></pre>
+
+        <p id="hint" class="result-note" hidden>粘贴到配置文件的 <code>proxies:</code> 下面即可。</p>
+        <p id="status" class="visually-hidden" role="status"></p>
+      </section>
+    </main>
+  </body>
+</html>
