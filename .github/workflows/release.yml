@@ -1,0 +1,29 @@
+name: release
+
+# 推送 master 只构建快照，用于确认能够交叉编译；推送 v* 标签才发布 Release
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          version: latest
+          args: release --clean ${{ github.ref_type == 'branch' && '--snapshot' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
