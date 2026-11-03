@@ -95,3 +95,7 @@ git tag v0.1.0
 ```bash
 git push origin v0.1.0
 ```
+
+## 许可证
+
+[MIT](LICENSE)
